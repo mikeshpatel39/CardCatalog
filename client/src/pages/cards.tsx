@@ -4,14 +4,19 @@ import { Card } from "@shared/schema";
 import { queryClient } from "@/lib/queryClient";
 import { apiRequest } from "@/lib/queryClient";
 import { CardsTable } from "@/components/cards-table";
+import { CardGridView } from "@/components/card-grid-view";
+import { TimelineView } from "@/components/timeline-view";
 import { CardFormDialog } from "@/components/card-form-dialog";
 import { PrintLayout } from "@/components/print-layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
-import { Plus, Printer, Search, X } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Plus, Printer, Search, X, Table, LayoutGrid, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+
+type ViewType = "table" | "grid" | "timeline";
 
 const REGIONS = [
   "North America",
@@ -38,6 +43,7 @@ export default function Cards() {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingCard, setEditingCard] = useState<Card | undefined>();
   const [showPrintLayout, setShowPrintLayout] = useState(false);
+  const [viewType, setViewType] = useState<ViewType>("table");
   const { toast } = useToast();
 
   const { data: cards = [], isLoading } = useQuery<Card[]>({
@@ -232,15 +238,58 @@ export default function Cards() {
           </div>
         </div>
 
-        <CardsTable
-          cards={filteredCards}
-          selectedCards={selectedCards}
-          onSelectCard={handleSelectCard}
-          onSelectAll={handleSelectAll}
-          onEditCard={handleEditCard}
-          onDeleteCard={handleDeleteCard}
-          isLoading={isLoading}
-        />
+        {/* View Switcher */}
+        <div className="mb-6">
+          <Tabs value={viewType} onValueChange={(value) => setViewType(value as ViewType)}>
+            <TabsList>
+              <TabsTrigger value="table" data-testid="tab-table-view">
+                <Table className="h-4 w-4 mr-2" />
+                Table
+              </TabsTrigger>
+              <TabsTrigger value="grid" data-testid="tab-grid-view">
+                <LayoutGrid className="h-4 w-4 mr-2" />
+                Card View
+              </TabsTrigger>
+              <TabsTrigger value="timeline" data-testid="tab-timeline-view">
+                <Clock className="h-4 w-4 mr-2" />
+                Timeline
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
+
+        {/* View Content */}
+        {isLoading ? (
+          <div className="bg-card rounded-lg border border-border p-8 text-center">
+            <div className="text-muted-foreground">Loading cards...</div>
+          </div>
+        ) : viewType === "table" ? (
+          <CardsTable
+            cards={filteredCards}
+            selectedCards={selectedCards}
+            onSelectCard={handleSelectCard}
+            onSelectAll={handleSelectAll}
+            onEditCard={handleEditCard}
+            onDeleteCard={handleDeleteCard}
+            isLoading={isLoading}
+          />
+        ) : viewType === "grid" ? (
+          <CardGridView
+            cards={filteredCards}
+            selectedCards={selectedCards}
+            onSelectCard={handleSelectCard}
+            onEditCard={handleEditCard}
+            onDeleteCard={handleDeleteCard}
+          />
+        ) : (
+          <TimelineView
+            cards={filteredCards}
+            selectedCards={selectedCards}
+            onSelectCard={handleSelectCard}
+            onEditCard={handleEditCard}
+            onDeleteCard={handleDeleteCard}
+          />
+        )}
       </main>
 
       <CardFormDialog
