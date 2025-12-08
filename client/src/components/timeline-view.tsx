@@ -24,7 +24,24 @@ function getDecades(): number[] {
   return decades;
 }
 
+function parseCardDate(dateStr: string): number {
+  if (!dateStr) return END_YEAR;
+  
+  const yearMatch = dateStr.match(/\d{4}/);
+  if (yearMatch) {
+    const year = parseInt(yearMatch[0]);
+    if (!isNaN(year) && year >= START_YEAR && year <= END_YEAR) {
+      return year;
+    }
+  }
+  return END_YEAR;
+}
+
 function getCardYear(card: Card): number {
+  if (card.cardDate) {
+    return parseCardDate(card.cardDate);
+  }
+  
   if (!card.createdAt) {
     return END_YEAR;
   }
@@ -136,7 +153,7 @@ export function TimelineView({ cards, selectedCards, onSelectCard, onEditCard, o
                             {card.author} • {card.region} • {card.sector}
                           </div>
                           <div className="text-xs text-muted-foreground">
-                            {getCardYear(card)}
+                            {card.cardDate || getCardYear(card)}
                           </div>
                           <div className="flex gap-2 pt-1 border-t border-border">
                             {onEditCard && (

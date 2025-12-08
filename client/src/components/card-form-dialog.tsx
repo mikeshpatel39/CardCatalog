@@ -53,6 +53,7 @@ export function CardFormDialog({ open, onOpenChange, editingCard }: CardFormDial
       isBase: false,
       isPlainEnglish: false,
       versions: [],
+      cardDate: "",
     },
   });
 
@@ -100,6 +101,7 @@ export function CardFormDialog({ open, onOpenChange, editingCard }: CardFormDial
         isBase: editingCard.isBase,
         isPlainEnglish: editingCard.isPlainEnglish,
         versions: editingCard.versions,
+        cardDate: editingCard.cardDate || "",
       });
     } else if (!editingCard && open) {
       form.reset({
@@ -112,6 +114,7 @@ export function CardFormDialog({ open, onOpenChange, editingCard }: CardFormDial
         isBase: false,
         isPlainEnglish: false,
         versions: [],
+        cardDate: "",
       });
     }
   }, [editingCard, open, form]);
@@ -143,7 +146,7 @@ export function CardFormDialog({ open, onOpenChange, editingCard }: CardFormDial
         
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <FormField
                 control={form.control}
                 name="name"
@@ -173,6 +176,24 @@ export function CardFormDialog({ open, onOpenChange, editingCard }: CardFormDial
                         placeholder="Enter author name" 
                         {...field} 
                         data-testid="input-author"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              
+              <FormField
+                control={form.control}
+                name="cardDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Date</FormLabel>
+                    <FormControl>
+                      <Input 
+                        placeholder="e.g. Jan 1840, 1892, Sep 2023" 
+                        {...field} 
+                        data-testid="input-card-date"
                       />
                     </FormControl>
                     <FormMessage />

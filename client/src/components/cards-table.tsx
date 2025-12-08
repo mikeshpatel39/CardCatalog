@@ -110,8 +110,8 @@ export function CardsTable({
                     data-testid={`checkbox-card-${card.id}`}
                   />
                 </TableCell>
-                <TableCell className="whitespace-nowrap text-sm text-foreground">
-                  {format(new Date(card.createdAt), 'yyyy-MM-dd')}
+                <TableCell className="whitespace-nowrap text-sm text-foreground" data-testid={`text-date-${card.id}`}>
+                  {card.cardDate || format(new Date(card.createdAt), 'yyyy-MM-dd')}
                 </TableCell>
                 <TableCell>
                   {card.imageUrl ? (

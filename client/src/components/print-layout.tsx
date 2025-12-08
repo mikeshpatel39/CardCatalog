@@ -111,7 +111,7 @@ export function PrintLayout({ cards, onClose }: PrintLayoutProps) {
                 </div>
                 <p className="text-xs leading-relaxed mb-2">{card.text}</p>
                 <div className="mt-2 text-xs text-gray-500">
-                  {card.region} | {format(new Date(card.createdAt), 'yyyy-MM-dd')}
+                  {card.region} | {card.cardDate || format(new Date(card.createdAt), 'yyyy-MM-dd')}
                 </div>
                 <div className="mt-1 text-xs text-gray-500 flex space-x-2">
                   {card.isBase && <span>Base</span>}
@@ -154,7 +154,7 @@ export function PrintLayout({ cards, onClose }: PrintLayoutProps) {
                     </div>
                     <p className="text-xs leading-relaxed mb-2 text-muted-foreground">{card.text}</p>
                     <div className="text-xs text-muted-foreground">
-                      {card.region} | {format(new Date(card.createdAt), 'yyyy-MM-dd')}
+                      {card.region} | {card.cardDate || format(new Date(card.createdAt), 'yyyy-MM-dd')}
                     </div>
                   </div>
                 ))}
