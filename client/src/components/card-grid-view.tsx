@@ -80,7 +80,7 @@ export function CardGridView({ cards, selectedCards, onSelectCard, onEditCard, o
               </p>
               <div className={`mt-2 pt-2 border-t ${card.imageUrl ? 'border-white/30 text-white/90' : 'border-border text-muted-foreground'} text-xs`}>
                 <div>{card.region} • {card.sector}</div>
-                <div>{card.author}</div>
+                <div>{card.author} • {card.cardDate || 'No date'}</div>
               </div>
             </div>
           </div>

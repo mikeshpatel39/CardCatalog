@@ -1,0 +1,103 @@
+{
+  "colorScheme": "light",
+  "fonts": [
+    {
+      "family": "Open Sans",
+      "role": "body"
+    },
+    {
+      "family": "Helvetica",
+      "role": "body"
+    },
+    {
+      "family": "Arial",
+      "role": "body"
+    },
+    {
+      "family": "Lucida",
+      "role": "body"
+    },
+    {
+      "family": "Montserrat",
+      "role": "heading"
+    }
+  ],
+  "colors": {
+    "primary": "#749455",
+    "accent": "#4F6E36",
+    "background": "#FFFFFF",
+    "textPrimary": "#4D4D4D",
+    "link": "#4F6E36"
+  },
+  "typography": {
+    "fontFamilies": {
+      "primary": "Open Sans",
+      "heading": "Montserrat"
+    },
+    "fontStacks": {
+      "heading": [
+        "Montserrat",
+        "Helvetica",
+        "Arial",
+        "Lucida",
+        "sans-serif"
+      ],
+      "body": [
+        "Open Sans",
+        "Helvetica",
+        "Arial",
+        "Lucida",
+        "sans-serif"
+      ],
+      "paragraph": [
+        "Open Sans",
+        "Helvetica",
+        "Arial",
+        "Lucida",
+        "sans-serif"
+      ]
+    },
+    "fontSizes": {
+      "h1": "50px",
+      "h2": "23px",
+      "body": "16px"
+    }
+  },
+  "spacing": {
+    "baseUnit": 4,
+    "borderRadius": "8px"
+  },
+  "components": {
+    "input": {
+      "borderColor": "#CCCCCC",
+      "borderRadius": "8px"
+    }
+  },
+  "images": {
+    "logo": "https://treatypeople.org/wp-content/uploads/2019/11/ferns.png",
+    "favicon": "https://treatypeople.org/wp-content/uploads/2013/02/TT-favicon-2.png",
+    "ogImage": "https://treatypeople.org/wp-content/uploads/2019/11/ferns.png"
+  },
+  "__framework_hints": [
+    "Divi v.4.18.0"
+  ],
+  "__llm_logo_reasoning": {
+    "selectedIndex": 4,
+    "reasoning": "Logo #4 matches the brand name 'tangata tiriti' and is located in the header, linking to the homepage, making it the most suitable choice.",
+    "confidence": 0.95
+  },
+  "personality": {
+    "tone": "modern",
+    "energy": "medium",
+    "targetAudience": "community-focused individuals and organizations"
+  },
+  "designSystem": {
+    "framework": "unknown",
+    "componentLibrary": null
+  },
+  "confidence": {
+    "buttons": 0.9,
+    "colors": 0.95,
+    "overall": 0.925
+  }
+}
