@@ -13,6 +13,7 @@ export const cards = pgTable("cards", {
   imageUrl: text("image_url").default(""),
   isBase: boolean("is_base").notNull().default(false),
   isPlainEnglish: boolean("is_plain_english").notNull().default(false),
+  type: text("type").notNull().default("colonisation"),
   versions: text("versions").array().notNull().default([]),
   cardDate: text("card_date").notNull().default(""),
   createdAt: timestamp("created_at").defaultNow().notNull(),

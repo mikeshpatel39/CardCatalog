@@ -95,7 +95,11 @@ export function PrintLayout({ cards, onClose }: PrintLayoutProps) {
         {cardPages.map((pageCards, pageIndex) => (
           <div key={pageIndex} className="card-print-layout">
             {pageCards.map((card) => (
-              <div key={card.id} className="print-card" data-testid={`print-card-${card.id}`}>
+              <div 
+                key={card.id} 
+                className={`print-card ${card.type === 'resistance' ? 'border-green-500 bg-green-50' : 'border-blue-500 bg-blue-50'}`} 
+                data-testid={`print-card-${card.id}`}
+              >
                 <div className="flex items-center mb-3">
                   {card.imageUrl && (
                     <img 

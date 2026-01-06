@@ -59,7 +59,9 @@ export function CardGridView({ cards, selectedCards, onSelectCard, onEditCard, o
             </div>
           </div>
           <div 
-            className="aspect-square bg-card border border-border rounded-lg p-4 flex flex-col overflow-hidden hover:border-primary/50 transition-colors relative"
+            className={`aspect-square border border-border rounded-lg p-4 flex flex-col overflow-hidden hover:border-primary/50 transition-colors relative ${
+              card.type === 'resistance' ? 'bg-green-50 dark:bg-green-950/20' : 'bg-blue-50 dark:bg-blue-950/20'
+            }`}
           >
             {card.imageUrl && (
               <div 

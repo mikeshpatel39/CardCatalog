@@ -28,6 +28,7 @@ export class MemStorage implements IStorage {
         imageUrl: "https://images.unsplash.com/photo-1541701494587-cb58502866ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200",
         isBase: true,
         isPlainEnglish: true,
+        type: "colonisation",
         versions: ["Digital Innovation Strategy", "Enterprise Digital Framework", "Innovation Implementation Guide"],
         cardDate: "Mar 2019"
       },
@@ -40,6 +41,7 @@ export class MemStorage implements IStorage {
         imageUrl: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200",
         isBase: true,
         isPlainEnglish: false,
+        type: "resistance",
         versions: ["Patient Care Protocol"],
         cardDate: "1892"
       },
@@ -52,6 +54,7 @@ export class MemStorage implements IStorage {
         imageUrl: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200",
         isBase: false,
         isPlainEnglish: true,
+        type: "colonisation",
         versions: ["Investment Risk Analysis", "Market Risk Assessment Framework"],
         cardDate: "Sep 1923"
       },
@@ -64,6 +67,7 @@ export class MemStorage implements IStorage {
         imageUrl: "https://images.unsplash.com/photo-1497486751825-1233686d5d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200",
         isBase: true,
         isPlainEnglish: true,
+        type: "resistance",
         versions: ["Learning Assessment Framework", "Student Progress Evaluation", "Educational Outcome Metrics", "Data-Driven Assessment Model"],
         cardDate: "Jan 1840"
       },
@@ -76,6 +80,7 @@ export class MemStorage implements IStorage {
         imageUrl: "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200",
         isBase: false,
         isPlainEnglish: false,
+        type: "colonisation",
         versions: ["Quality Control Standards"],
         cardDate: "2012"
       }
@@ -104,6 +109,7 @@ export class MemStorage implements IStorage {
       imageUrl: insertCard.imageUrl || "",
       isBase: insertCard.isBase || false,
       isPlainEnglish: insertCard.isPlainEnglish || false,
+      type: insertCard.type || "colonisation",
       versions: insertCard.versions || [],
       cardDate: insertCard.cardDate || "",
       createdAt: new Date(),

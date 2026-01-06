@@ -100,7 +100,9 @@ export function CardsTable({
             {sortedCards.map((card) => (
               <TableRow 
                 key={card.id} 
-                className="hover:bg-muted/50 transition-colors"
+                className={`hover:bg-muted/50 transition-colors ${
+                  card.type === 'resistance' ? 'bg-green-50/50 dark:bg-green-950/20' : 'bg-blue-50/50 dark:bg-blue-950/20'
+                }`}
                 data-testid={`row-card-${card.id}`}
               >
                 <TableCell>

@@ -121,12 +121,14 @@ export function TimelineView({ cards, selectedCards, onSelectCard, onEditCard, o
                           data-testid={`timeline-card-${card.id}`}
                         >
                           <div
-                            className="w-10 h-10 rounded-md border-2 border-border bg-card overflow-hidden"
+                            className={`w-10 h-10 rounded-md border-2 overflow-hidden ${
+                              card.type === 'resistance' ? 'border-green-500 bg-green-50' : 'border-blue-500 bg-blue-50'
+                            }`}
                             style={{
                               backgroundImage: card.imageUrl ? `url(${card.imageUrl})` : undefined,
                               backgroundSize: 'cover',
                               backgroundPosition: 'center',
-                              backgroundColor: !card.imageUrl ? 'var(--primary)' : undefined,
+                              backgroundColor: !card.imageUrl ? (card.type === 'resistance' ? '#22c55e' : '#3b82f6') : undefined,
                             }}
                           >
                             {!card.imageUrl && (

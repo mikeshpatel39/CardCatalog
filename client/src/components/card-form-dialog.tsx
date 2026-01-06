@@ -100,6 +100,7 @@ export function CardFormDialog({ open, onOpenChange, editingCard }: CardFormDial
         imageUrl: editingCard.imageUrl || "",
         isBase: editingCard.isBase,
         isPlainEnglish: editingCard.isPlainEnglish,
+        type: editingCard.type || "colonisation",
         versions: editingCard.versions,
         cardDate: editingCard.cardDate || "",
       });
@@ -113,6 +114,7 @@ export function CardFormDialog({ open, onOpenChange, editingCard }: CardFormDial
         imageUrl: "",
         isBase: false,
         isPlainEnglish: false,
+        type: "colonisation",
         versions: [],
         cardDate: "",
       });
@@ -267,8 +269,29 @@ export function CardFormDialog({ open, onOpenChange, editingCard }: CardFormDial
                   </FormItem>
                 )}
               />
+
+              <FormField
+                control={form.control}
+                name="type"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Card Type</FormLabel>
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <FormControl>
+                        <SelectTrigger data-testid="select-form-type">
+                          <SelectValue placeholder="Select type" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="colonisation">Colonisation (Blue)</SelectItem>
+                        <SelectItem value="resistance">Resistance (Green)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
-            
             <FormField
               control={form.control}
               name="imageUrl"
