@@ -122,10 +122,16 @@ export function CardFormDialog({ open, onOpenChange, editingCard }: CardFormDial
   }, [editingCard, open, form]);
 
   const onSubmit = (data: InsertCard) => {
+    // Enforcement: Only resistance cards can have images
+    const validatedData = {
+      ...data,
+      imageUrl: data.type === 'resistance' ? data.imageUrl : "",
+    };
+
     // Add the card name as the first version if versions array is empty
     const finalData = {
-      ...data,
-      versions: (data.versions && data.versions.length > 0) ? data.versions : [data.name],
+      ...validatedData,
+      versions: (validatedData.versions && validatedData.versions.length > 0) ? validatedData.versions : [validatedData.name],
     };
 
     if (editingCard) {
@@ -296,24 +302,29 @@ export function CardFormDialog({ open, onOpenChange, editingCard }: CardFormDial
               control={form.control}
               name="imageUrl"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image URL</FormLabel>
+                <FormItem className={form.watch("type") !== 'resistance' ? "opacity-50 pointer-events-none" : ""}>
+                  <FormLabel>Image URL {form.watch("type") !== 'resistance' && "(Resistance cards only)"}</FormLabel>
                   <FormControl>
                     <div className="space-y-2">
                       <Input 
-                        placeholder="Enter image URL" 
+                        placeholder={form.watch("type") === 'resistance' ? "Enter image URL" : "N/A - Resistance cards only"} 
                         {...field}
                         value={field.value || ""}
+                        disabled={form.watch("type") !== 'resistance'}
                         data-testid="input-image-url"
                       />
                       <div className="border-2 border-dashed border-input rounded-md p-6 text-center">
                         <Upload className="mx-auto h-12 w-12 text-muted-foreground" />
                         <p className="mt-2 text-sm text-muted-foreground">
-                          Upload functionality coming soon. For now, please use image URLs.
+                          {form.watch("type") === 'resistance' 
+                            ? "Upload functionality coming soon. For now, please use image URLs." 
+                            : "Images can only be added to Resistance cards."}
                         </p>
-                        <p className="text-xs text-muted-foreground">
-                          Try: https://images.unsplash.com/photo-{"{photo-id}"}?auto=format&fit=crop&w=300&h=200
-                        </p>
+                        {form.watch("type") === 'resistance' && (
+                          <p className="text-xs text-muted-foreground">
+                            Try: https://images.unsplash.com/photo-{"{photo-id}"}?auto=format&fit=crop&w=300&h=200
+                          </p>
+                        )}
                       </div>
                     </div>
                   </FormControl>
