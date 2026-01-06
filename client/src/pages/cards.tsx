@@ -39,6 +39,7 @@ export default function Cards() {
   const [searchQuery, setSearchQuery] = useState("");
   const [regionFilter, setRegionFilter] = useState("");
   const [sectorFilter, setSectorFilter] = useState("");
+  const [typeFilter, setTypeFilter] = useState("");
   const [selectedCards, setSelectedCards] = useState<Set<string>>(new Set());
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingCard, setEditingCard] = useState<Card | undefined>();
@@ -71,8 +72,9 @@ export default function Cards() {
     
     const matchesRegion = !regionFilter || card.region === regionFilter;
     const matchesSector = !sectorFilter || card.sector === sectorFilter;
+    const matchesType = !typeFilter || card.type === typeFilter;
     
-    return matchesSearch && matchesRegion && matchesSector;
+    return matchesSearch && matchesRegion && matchesSector && matchesType;
   });
 
   const handleSelectCard = (cardId: string, selected: boolean) => {
@@ -121,6 +123,7 @@ export default function Cards() {
     setSearchQuery("");
     setRegionFilter("");
     setSectorFilter("");
+    setTypeFilter("");
   };
 
   const selectedCardsData = cards.filter(card => selectedCards.has(card.id));
@@ -220,6 +223,22 @@ export default function Cards() {
                   {SECTORS.map(sector => (
                     <SelectItem key={sector} value={sector}>{sector}</SelectItem>
                   ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="min-w-48">
+              <Label className="block text-sm font-medium text-foreground mb-2">
+                Filter by Type
+              </Label>
+              <Select value={typeFilter} onValueChange={(value) => setTypeFilter(value === "all" ? "" : value)}>
+                <SelectTrigger data-testid="select-type">
+                  <SelectValue placeholder="All Types" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All Types</SelectItem>
+                  <SelectItem value="colonisation">Colonisation (Blue)</SelectItem>
+                  <SelectItem value="resistance">Resistance (Green)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
