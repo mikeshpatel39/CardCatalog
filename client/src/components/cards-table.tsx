@@ -132,8 +132,17 @@ export function CardsTable({
                 <TableCell className="text-sm font-medium text-foreground" data-testid={`text-name-${card.id}`}>
                   {card.name}
                 </TableCell>
-                <TableCell className="text-sm text-muted-foreground max-w-xs truncate" data-testid={`text-content-${card.id}`}>
-                  {card.text}
+                <TableCell className="text-sm text-muted-foreground max-w-xs" data-testid={`text-content-${card.id}`}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="truncate cursor-help">
+                        {card.text}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-md">
+                      <p className="text-sm leading-relaxed">{card.text}</p>
+                    </TooltipContent>
+                  </Tooltip>
                 </TableCell>
                 <TableCell className="text-sm text-foreground" data-testid={`text-region-${card.id}`}>
                   {card.region}
