@@ -101,7 +101,7 @@ export function CardsTable({
               <TableRow 
                 key={card.id} 
                 className={`hover:bg-muted/50 transition-colors ${
-                  card.type === 'resistance' ? 'bg-green-50/50 dark:bg-green-950/20' : 'bg-blue-50/50 dark:bg-blue-950/20'
+                  card.type === 'resistance' ? 'bg-green-100/50 dark:bg-green-900/20' : 'bg-blue-100/50 dark:bg-blue-900/20'
                 }`}
                 data-testid={`row-card-${card.id}`}
               >

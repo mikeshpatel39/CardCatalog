@@ -60,7 +60,7 @@ export function CardGridView({ cards, selectedCards, onSelectCard, onEditCard, o
           </div>
           <div 
             className={`aspect-square border border-border rounded-lg p-4 flex flex-col overflow-hidden hover:border-primary/50 transition-colors relative ${
-              card.type === 'resistance' ? 'bg-green-50 dark:bg-green-950/20' : 'bg-blue-50 dark:bg-blue-950/20'
+              card.type === 'resistance' ? 'bg-green-100 dark:bg-green-900/20' : 'bg-blue-100 dark:bg-blue-900/20'
             }`}
           >
             {card.imageUrl && (
