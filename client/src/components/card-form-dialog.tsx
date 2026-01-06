@@ -122,7 +122,7 @@ export function CardFormDialog({ open, onOpenChange, editingCard }: CardFormDial
         sector: editingCard.sector,
         author: editingCard.author,
         imageUrl: editingCard.imageUrl || "",
-        isBase: editingCard.isBase,
+        isCore: editingCard.isCore,
         isPlainEnglish: editingCard.isPlainEnglish,
         type: editingCard.type || "colonisation",
         versions: editingCard.versions,
@@ -136,7 +136,7 @@ export function CardFormDialog({ open, onOpenChange, editingCard }: CardFormDial
         sector: "",
         author: "",
         imageUrl: "",
-        isBase: false,
+        isCore: false,
         isPlainEnglish: false,
         type: "colonisation",
         versions: [],
@@ -360,18 +360,18 @@ export function CardFormDialog({ open, onOpenChange, editingCard }: CardFormDial
             <div className="flex items-center space-x-6">
               <FormField
                 control={form.control}
-                name="isBase"
+                name="isCore"
                 render={({ field }) => (
                   <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                     <FormControl>
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={field.onChange}
-                        data-testid="checkbox-is-base"
+                        data-testid="checkbox-is-core"
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel>Base</FormLabel>
+                      <FormLabel>Core</FormLabel>
                     </div>
                   </FormItem>
                 )}

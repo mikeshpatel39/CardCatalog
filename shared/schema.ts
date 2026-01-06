@@ -11,7 +11,7 @@ export const cards = pgTable("cards", {
   sector: text("sector").notNull(),
   author: text("author").notNull(),
   imageUrl: text("image_url").default(""),
-  isBase: boolean("is_base").notNull().default(false),
+  isCore: boolean("is_core").notNull().default(false),
   isPlainEnglish: boolean("is_plain_english").notNull().default(false),
   type: text("type").notNull().default("colonisation"),
   versions: text("versions").array().notNull().default([]),

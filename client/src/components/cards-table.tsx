@@ -90,7 +90,7 @@ export function CardsTable({
               <TableHead className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Region</TableHead>
               <TableHead className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Sector</TableHead>
               <TableHead className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Author</TableHead>
-              <TableHead className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Base</TableHead>
+              <TableHead className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Core</TableHead>
               <TableHead className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Plain English</TableHead>
               <TableHead className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Versions</TableHead>
               <TableHead className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</TableHead>
@@ -154,8 +154,8 @@ export function CardsTable({
                   {card.author}
                 </TableCell>
                 <TableCell>
-                  {card.isBase && (
-                    <Check className="h-4 w-4 text-green-600" data-testid={`icon-base-${card.id}`} />
+                  {card.isCore && (
+                    <Check className="h-4 w-4 text-green-600" data-testid={`icon-core-${card.id}`} />
                   )}
                 </TableCell>
                 <TableCell>

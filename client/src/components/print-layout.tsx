@@ -118,7 +118,7 @@ export function PrintLayout({ cards, onClose }: PrintLayoutProps) {
                   {card.region} | {card.cardDate || format(new Date(card.createdAt), 'yyyy-MM-dd')}
                 </div>
                 <div className="mt-1 text-xs text-gray-500 flex space-x-2">
-                  {card.isBase && <span>Base</span>}
+                  {card.isCore && <span>Core</span>}
                   {card.isPlainEnglish && <span>Plain English</span>}
                 </div>
               </div>
