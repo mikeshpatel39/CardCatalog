@@ -16,6 +16,7 @@ import { useToast } from "@/hooks/use-toast";
 import { Upload } from "lucide-react";
 
 const REGIONS = [
+  "National",
   "Northland",
   "Auckland",
   "Waikato",
@@ -31,7 +32,11 @@ const REGIONS = [
   "West Coast",
   "Canterbury",
   "Otago",
-  "Southland"
+  "Southland",
+  "Te Tai Tokerau",
+  "Te Moana-a-Toi",
+  "Te Whanganui-a-Tara",
+  "Whakatū"
 ];
 
 const SECTORS = [
@@ -40,7 +45,15 @@ const SECTORS = [
   "Finance",
   "Education",
   "Manufacturing",
-  "Retail"
+  "Retail",
+  "Environment",
+  "Land",
+  "Economy",
+  "Social Services",
+  "Health",
+  "Justice",
+  "Local Government",
+  "Other"
 ];
 
 interface CardFormDialogProps {

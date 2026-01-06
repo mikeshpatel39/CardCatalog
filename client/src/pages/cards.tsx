@@ -19,6 +19,7 @@ import { useToast } from "@/hooks/use-toast";
 type ViewType = "table" | "grid" | "timeline";
 
 const REGIONS = [
+  "National",
   "Northland",
   "Auckland",
   "Waikato",
@@ -34,7 +35,11 @@ const REGIONS = [
   "West Coast",
   "Canterbury",
   "Otago",
-  "Southland"
+  "Southland",
+  "Te Tai Tokerau",
+  "Te Moana-a-Toi",
+  "Te Whanganui-a-Tara",
+  "Whakatū"
 ];
 
 const SECTORS = [
@@ -43,7 +48,15 @@ const SECTORS = [
   "Finance",
   "Education",
   "Manufacturing",
-  "Retail"
+  "Retail",
+  "Environment",
+  "Land",
+  "Economy",
+  "Social Services",
+  "Health",
+  "Justice",
+  "Local Government",
+  "Other"
 ];
 
 export default function Cards() {
