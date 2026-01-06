@@ -19,11 +19,22 @@ import { useToast } from "@/hooks/use-toast";
 type ViewType = "table" | "grid" | "timeline";
 
 const REGIONS = [
-  "North America",
-  "Europe", 
-  "Asia Pacific",
-  "Latin America",
-  "Middle East & Africa"
+  "Northland",
+  "Auckland",
+  "Waikato",
+  "Bay of Plenty",
+  "Gisborne",
+  "Hawke's Bay",
+  "Taranaki",
+  "Manawatu-Wanganui",
+  "Wellington",
+  "Tasman",
+  "Nelson",
+  "Marlborough",
+  "West Coast",
+  "Canterbury",
+  "Otago",
+  "Southland"
 ];
 
 const SECTORS = [

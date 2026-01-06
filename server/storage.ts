@@ -22,7 +22,7 @@ export class MemStorage implements IStorage {
       {
         name: "Digital Innovation Strategy",
         text: "Comprehensive framework for implementing digital transformation initiatives across enterprise organizations with focus on scalability and ROI measurement.",
-        region: "North America",
+        region: "Auckland",
         sector: "Technology",
         author: "Sarah Chen",
         imageUrl: "",
@@ -35,7 +35,7 @@ export class MemStorage implements IStorage {
       {
         name: "Patient Care Protocol",
         text: "Evidence-based guidelines for optimal patient outcomes in clinical settings with focus on safety protocols and quality care standards.",
-        region: "Europe",
+        region: "Wellington",
         sector: "Healthcare",
         author: "Dr. Michael Roberts",
         imageUrl: "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200",
@@ -48,7 +48,7 @@ export class MemStorage implements IStorage {
       {
         name: "Investment Risk Analysis",
         text: "Comprehensive methodology for evaluating financial risk profiles and investment opportunities in volatile markets with predictive modeling.",
-        region: "Asia Pacific",
+        region: "Canterbury",
         sector: "Finance",
         author: "Jennifer Liu",
         imageUrl: "",
@@ -61,7 +61,7 @@ export class MemStorage implements IStorage {
       {
         name: "Learning Assessment Framework",
         text: "Innovative approach to measuring student progress and educational outcomes through data-driven methodologies and performance analytics.",
-        region: "Latin America",
+        region: "Otago",
         sector: "Education",
         author: "Carlos Martinez",
         imageUrl: "https://images.unsplash.com/photo-1497486751825-1233686d5d80?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&h=200",
@@ -74,7 +74,7 @@ export class MemStorage implements IStorage {
       {
         name: "Quality Control Standards",
         text: "ISO-compliant procedures for maintaining product quality and manufacturing excellence in industrial environments with continuous improvement protocols.",
-        region: "Middle East & Africa",
+        region: "Waikato",
         sector: "Manufacturing",
         author: "Ahmed Hassan",
         imageUrl: "",
