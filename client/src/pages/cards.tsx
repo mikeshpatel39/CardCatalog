@@ -13,8 +13,9 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Printer, Search, X, Table, LayoutGrid, Clock } from "lucide-react";
+import { Plus, Printer, Search, X, Table, LayoutGrid, Clock, Filter } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { Switch } from "@/components/ui/switch";
 
 type ViewType = "table" | "grid" | "timeline";
 
@@ -64,6 +65,8 @@ export default function Cards() {
   const [regionFilter, setRegionFilter] = useState("");
   const [sectorFilter, setSectorFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
+  const [coreFilter, setCoreFilter] = useState<boolean | null>(null);
+  const [plainEnglishFilter, setPlainEnglishFilter] = useState<boolean | null>(null);
   const [selectedCards, setSelectedCards] = useState<Set<string>>(new Set());
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingCard, setEditingCard] = useState<Card | undefined>();
@@ -97,8 +100,10 @@ export default function Cards() {
     const matchesRegion = !regionFilter || card.region === regionFilter;
     const matchesSector = !sectorFilter || card.sector === sectorFilter;
     const matchesType = !typeFilter || card.type === typeFilter;
+    const matchesCore = coreFilter === null || card.isCore === coreFilter;
+    const matchesPlainEnglish = plainEnglishFilter === null || card.isPlainEnglish === plainEnglishFilter;
     
-    return matchesSearch && matchesRegion && matchesSector && matchesType;
+    return matchesSearch && matchesRegion && matchesSector && matchesType && matchesCore && matchesPlainEnglish;
   });
 
   const handleSelectCard = (cardId: string, selected: boolean) => {
@@ -148,6 +153,8 @@ export default function Cards() {
     setRegionFilter("");
     setSectorFilter("");
     setTypeFilter("");
+    setCoreFilter(null);
+    setPlainEnglishFilter(null);
   };
 
   const selectedCardsData = cards.filter(card => selectedCards.has(card.id));
@@ -265,6 +272,28 @@ export default function Cards() {
                   <SelectItem value="resistance">Resistance (Green)</SelectItem>
                 </SelectContent>
               </Select>
+            </div>
+
+            <div className="flex flex-col space-y-2 mb-1">
+              <Label className="text-sm font-medium text-foreground">Core Only</Label>
+              <div className="flex items-center h-10">
+                <Switch 
+                  checked={coreFilter === true} 
+                  onCheckedChange={(checked) => setCoreFilter(checked ? true : null)}
+                  data-testid="switch-core-filter"
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col space-y-2 mb-1">
+              <Label className="text-sm font-medium text-foreground">Plain English Only</Label>
+              <div className="flex items-center h-10">
+                <Switch 
+                  checked={plainEnglishFilter === true} 
+                  onCheckedChange={(checked) => setPlainEnglishFilter(checked ? true : null)}
+                  data-testid="switch-plain-english-filter"
+                />
+              </div>
             </div>
             
             <div className="flex gap-2">
