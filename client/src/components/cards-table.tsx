@@ -15,6 +15,7 @@ interface CardsTableProps {
   onEditCard: (card: Card) => void;
   onDeleteCard: (cardId: string) => void;
   isLoading: boolean;
+  isPlainEnglish?: boolean;
 }
 
 export function CardsTable({
@@ -24,7 +25,8 @@ export function CardsTable({
   onSelectAll,
   onEditCard,
   onDeleteCard,
-  isLoading
+  isLoading,
+  isPlainEnglish
 }: CardsTableProps) {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
 
@@ -136,11 +138,13 @@ export function CardsTable({
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div className="truncate cursor-help">
-                        {card.text}
+                        {(isPlainEnglish && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
                       </div>
                     </TooltipTrigger>
                     <TooltipContent className="max-w-md">
-                      <p className="text-sm leading-relaxed">{card.text}</p>
+                      <p className="text-sm leading-relaxed">
+                        {(isPlainEnglish && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
+                      </p>
                     </TooltipContent>
                   </Tooltip>
                 </TableCell>

@@ -7,9 +7,10 @@ import { format } from "date-fns";
 interface PrintLayoutProps {
   cards: Card[];
   onClose: () => void;
+  isPlainEnglish?: boolean;
 }
 
-export function PrintLayout({ cards, onClose }: PrintLayoutProps) {
+export function PrintLayout({ cards, onClose, isPlainEnglish }: PrintLayoutProps) {
   useEffect(() => {
     // Add print styles to document head
     const printStyles = document.createElement("style");
@@ -113,7 +114,9 @@ export function PrintLayout({ cards, onClose }: PrintLayoutProps) {
                     <p className="text-xs text-gray-600">{card.author} - {card.sector}</p>
                   </div>
                 </div>
-                <p className="text-xs leading-relaxed mb-2">{card.text}</p>
+                <p className="text-xs leading-relaxed mb-2">
+                  {(isPlainEnglish && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
+                </p>
                 <div className="mt-2 text-xs text-gray-500">
                   {card.region} | {card.cardDate || format(new Date(card.createdAt), 'yyyy-MM-dd')}
                 </div>
@@ -156,7 +159,9 @@ export function PrintLayout({ cards, onClose }: PrintLayoutProps) {
                         <p className="text-xs text-muted-foreground">{card.author} - {card.sector}</p>
                       </div>
                     </div>
-                    <p className="text-xs leading-relaxed mb-2 text-muted-foreground">{card.text}</p>
+                    <p className="text-xs leading-relaxed mb-2 text-muted-foreground">
+                      {(isPlainEnglish && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
+                    </p>
                     <div className="text-xs text-muted-foreground">
                       {card.region} | {card.cardDate || format(new Date(card.createdAt), 'yyyy-MM-dd')}
                     </div>

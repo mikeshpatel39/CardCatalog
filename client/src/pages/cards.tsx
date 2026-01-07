@@ -99,54 +99,13 @@ export default function Cards() {
     
     const matchesRegion = !regionFilter || card.region === regionFilter;
     const matchesSector = !sectorFilter || card.sector === sectorFilter;
-    const matchesType = !typeFilter || card.type === typeFilter;
     const matchesCore = coreFilter === null || card.isCore === coreFilter;
-    const matchesPlainEnglish = plainEnglishFilter === null || card.isPlainEnglish === plainEnglishFilter;
     
-    return matchesSearch && matchesRegion && matchesSector && matchesType && matchesCore && matchesPlainEnglish;
+    // We don't filter by plainEnglishFilter here anymore because the toggle 
+    // now switches content, not visibility
+    
+    return matchesSearch && matchesRegion && matchesSector && matchesType && matchesCore;
   });
-
-  const handleSelectCard = (cardId: string, selected: boolean) => {
-    const newSelected = new Set(selectedCards);
-    if (selected) {
-      newSelected.add(cardId);
-    } else {
-      newSelected.delete(cardId);
-    }
-    setSelectedCards(newSelected);
-  };
-
-  const handleSelectAll = (selected: boolean) => {
-    if (selected) {
-      setSelectedCards(new Set(filteredCards.map(card => card.id)));
-    } else {
-      setSelectedCards(new Set());
-    }
-  };
-
-  const handleDeleteCard = (cardId: string) => {
-    if (confirm("Are you sure you want to delete this card?")) {
-      deleteCardMutation.mutate(cardId);
-    }
-  };
-
-  const handleEditCard = (card: Card) => {
-    setEditingCard(card);
-    setIsFormOpen(true);
-  };
-
-  const handleAddCard = () => {
-    setEditingCard(undefined);
-    setIsFormOpen(true);
-  };
-
-  const handlePrintSelected = () => {
-    if (selectedCards.size === 0) {
-      toast({ title: "Please select cards to print", variant: "destructive" });
-      return;
-    }
-    setShowPrintLayout(true);
-  };
 
   const clearFilters = () => {
     setSearchQuery("");
@@ -154,7 +113,7 @@ export default function Cards() {
     setSectorFilter("");
     setTypeFilter("");
     setCoreFilter(null);
-    setPlainEnglishFilter(null);
+    setPlainEnglishFilter(false); // Default to false instead of null
   };
 
   const selectedCardsData = cards.filter(card => selectedCards.has(card.id));
@@ -164,6 +123,7 @@ export default function Cards() {
       <PrintLayout 
         cards={selectedCardsData} 
         onClose={() => setShowPrintLayout(false)} 
+        isPlainEnglish={!!plainEnglishFilter}
       />
     );
   }
@@ -286,12 +246,12 @@ export default function Cards() {
             </div>
 
             <div className="flex flex-col space-y-2 mb-1">
-              <Label className="text-sm font-medium text-foreground">Plain English Only</Label>
+              <Label className="text-sm font-medium text-foreground">Plain English</Label>
               <div className="flex items-center h-10">
                 <Switch 
-                  checked={plainEnglishFilter === true} 
-                  onCheckedChange={(checked) => setPlainEnglishFilter(checked ? true : null)}
-                  data-testid="switch-plain-english-filter"
+                  checked={!!plainEnglishFilter} 
+                  onCheckedChange={(checked) => setPlainEnglishFilter(checked)}
+                  data-testid="switch-plain-english-content"
                 />
               </div>
             </div>
@@ -344,6 +304,7 @@ export default function Cards() {
             onEditCard={handleEditCard}
             onDeleteCard={handleDeleteCard}
             isLoading={isLoading}
+            isPlainEnglish={!!plainEnglishFilter}
           />
         ) : viewType === "grid" ? (
           <CardGridView
@@ -352,6 +313,7 @@ export default function Cards() {
             onSelectCard={handleSelectCard}
             onEditCard={handleEditCard}
             onDeleteCard={handleDeleteCard}
+            isPlainEnglish={!!plainEnglishFilter}
           />
         ) : (
           <TimelineView
@@ -360,6 +322,7 @@ export default function Cards() {
             onSelectCard={handleSelectCard}
             onEditCard={handleEditCard}
             onDeleteCard={handleDeleteCard}
+            isPlainEnglish={!!plainEnglishFilter}
           />
         )}
       </main>
