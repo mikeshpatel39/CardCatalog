@@ -12,6 +12,9 @@ import { useToast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+
 interface CardsTableProps {
   cards: Card[];
   selectedCards: Set<string>;
@@ -36,11 +39,12 @@ export function CardsTable({
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [addVersionCard, setAddVersionCard] = useState<Card | null>(null);
   const [newVersionText, setNewVersionText] = useState("");
+  const [isNewVersionPlainEnglish, setIsNewVersionPlainEnglish] = useState(false);
   const { toast } = useToast();
 
   const addVersionMutation = useMutation({
-    mutationFn: async ({ id, versions }: { id: string; versions: string[] }) => {
-      const res = await apiRequest("PUT", `/api/cards/${id}`, { versions });
+    mutationFn: async ({ id, versions, isPlainEnglish }: { id: string; versions: string[]; isPlainEnglish: boolean }) => {
+      const res = await apiRequest("PUT", `/api/cards/${id}`, { versions, isPlainEnglish });
       return res.json();
     },
     onSuccess: () => {
@@ -48,6 +52,7 @@ export function CardsTable({
       toast({ title: "Version added successfully" });
       setAddVersionCard(null);
       setNewVersionText("");
+      setIsNewVersionPlainEnglish(false);
     },
     onError: () => {
       toast({ title: "Failed to add version", variant: "destructive" });
@@ -57,7 +62,11 @@ export function CardsTable({
   const handleAddVersion = () => {
     if (!addVersionCard || !newVersionText.trim()) return;
     const updatedVersions = [...addVersionCard.versions, newVersionText.trim()];
-    addVersionMutation.mutate({ id: addVersionCard.id, versions: updatedVersions });
+    addVersionMutation.mutate({ 
+      id: addVersionCard.id, 
+      versions: updatedVersions,
+      isPlainEnglish: isNewVersionPlainEnglish
+    });
   };
 
   const sortedCards = [...cards].sort((a, b) => {
@@ -222,6 +231,7 @@ export function CardsTable({
                       onClick={() => {
                         setAddVersionCard(card);
                         setNewVersionText("");
+                        setIsNewVersionPlainEnglish(card.isPlainEnglish); // Pre-fill with current status
                       }}
                       className="h-7 px-2 text-[10px] text-muted-foreground hover:text-primary"
                       data-testid={`button-add-version-${card.id}`}
@@ -264,7 +274,7 @@ export function CardsTable({
           <DialogHeader>
             <DialogTitle>Add New Version</DialogTitle>
           </DialogHeader>
-          <div className="py-4">
+          <div className="py-4 space-y-4">
             <Textarea
               placeholder="Enter the new version text..."
               value={newVersionText}
@@ -272,6 +282,15 @@ export function CardsTable({
               className="min-h-[100px]"
               data-testid="textarea-new-version"
             />
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="plain-english-version"
+                checked={isNewVersionPlainEnglish}
+                onCheckedChange={setIsNewVersionPlainEnglish}
+                data-testid="switch-version-plain-english"
+              />
+              <Label htmlFor="plain-english-version">This is a Plain English version</Label>
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setAddVersionCard(null)}>Cancel</Button>
