@@ -123,13 +123,19 @@ export function TimelineView({ cards, selectedCards, onSelectCard, onEditCard, o
                         >
                           <div
                             className={`w-10 h-10 rounded-md border-2 overflow-hidden ${
-                              card.type === 'resistance' ? 'border-green-500 bg-green-50' : 'border-blue-500 bg-blue-50'
+                              card.type === 'resistance' ? 'border-green-500 bg-green-50' : 
+                              card.type === 'solidarity' ? 'border-yellow-500 bg-yellow-50' :
+                              'border-blue-500 bg-blue-50'
                             }`}
                             style={{
                               backgroundImage: card.imageUrl ? `url(${card.imageUrl})` : undefined,
                               backgroundSize: 'cover',
                               backgroundPosition: 'center',
-                              backgroundColor: !card.imageUrl ? (card.type === 'resistance' ? '#22c55e' : '#3b82f6') : undefined,
+                              backgroundColor: !card.imageUrl ? (
+                                card.type === 'resistance' ? '#22c55e' : 
+                                card.type === 'solidarity' ? '#eab308' :
+                                '#3b82f6'
+                              ) : undefined,
                             }}
                           >
                             {!card.imageUrl && (

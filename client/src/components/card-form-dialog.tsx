@@ -315,6 +315,7 @@ export function CardFormDialog({ open, onOpenChange, editingCard }: CardFormDial
                       <SelectContent>
                         <SelectItem value="colonisation">Colonisation (Blue)</SelectItem>
                         <SelectItem value="resistance">Resistance (Green)</SelectItem>
+                        <SelectItem value="solidarity">Solidarity (Yellow)</SelectItem>
                       </SelectContent>
                     </Select>
                     <FormMessage />

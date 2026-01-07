@@ -125,7 +125,11 @@ export function PrintLayout({ cards, onClose, isEasyLanguage }: PrintLayoutProps
               return (
                 <div 
                   key={card.id} 
-                  className={`print-card ${card.type === 'resistance' ? 'border-green-500 bg-green-50' : 'border-blue-500 bg-blue-50'}`} 
+                  className={`print-card ${
+                    card.type === 'resistance' ? 'border-green-500 bg-green-50' : 
+                    card.type === 'solidarity' ? 'border-yellow-500 bg-yellow-50' :
+                    'border-blue-500 bg-blue-50'
+                  }`} 
                   data-testid={`print-card-${card.id}`}
                 >
                   <div className="flex items-center mb-3">

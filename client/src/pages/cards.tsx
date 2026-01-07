@@ -296,6 +296,7 @@ export default function Cards() {
                   <SelectItem value="all">All Types</SelectItem>
                   <SelectItem value="colonisation">Colonisation (Blue)</SelectItem>
                   <SelectItem value="resistance">Resistance (Green)</SelectItem>
+                  <SelectItem value="solidarity">Solidarity (Yellow)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
