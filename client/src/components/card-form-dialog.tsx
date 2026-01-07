@@ -74,7 +74,7 @@ export function CardFormDialog({ open, onOpenChange, editingCard }: CardFormDial
       sector: "",
       author: "",
       imageUrl: "",
-      isBase: false,
+      isCore: false,
       isPlainEnglish: false,
       versions: [],
       cardDate: "",

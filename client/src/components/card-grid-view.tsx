@@ -9,10 +9,10 @@ interface CardGridViewProps {
   onSelectCard: (cardId: string, selected: boolean) => void;
   onEditCard?: (card: Card) => void;
   onDeleteCard?: (cardId: string) => void;
-  isPlainEnglish?: boolean;
+  isEasyLanguage?: boolean;
 }
 
-export function CardGridView({ cards, selectedCards, onSelectCard, onEditCard, onDeleteCard, isPlainEnglish }: CardGridViewProps) {
+export function CardGridView({ cards, selectedCards, onSelectCard, onEditCard, onDeleteCard, isEasyLanguage }: CardGridViewProps) {
   if (cards.length === 0) {
     return (
       <div className="bg-card rounded-lg border border-border p-8 text-center">
@@ -79,7 +79,7 @@ export function CardGridView({ cards, selectedCards, onSelectCard, onEditCard, o
                 className={`text-sm leading-relaxed overflow-y-auto flex-1 ${card.imageUrl ? 'text-white font-medium' : 'text-muted-foreground'}`}
                 data-testid={`grid-text-${card.id}`}
               >
-                {(isPlainEnglish && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
+                {(isEasyLanguage && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
               </p>
               <div className={`mt-2 pt-2 border-t ${card.imageUrl ? 'border-white/30 text-white/90' : 'border-border text-muted-foreground'} text-xs`}>
                 <div>{card.region} • {card.sector}</div>

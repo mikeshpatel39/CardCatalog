@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Printer, Search, X, Table, LayoutGrid, Clock, Filter } from "lucide-react";
+import { Plus, Printer, Search, X, Table, LayoutGrid, Clock } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Switch } from "@/components/ui/switch";
 
@@ -143,9 +143,6 @@ export default function Cards() {
     const matchesSector = !sectorFilter || card.sector === sectorFilter;
     const matchesCore = coreFilter === null || card.isCore === coreFilter;
     const matchesType = !typeFilter || card.type === typeFilter;
-    
-    // We don't filter by easyLanguageFilter here anymore because the toggle 
-    // now switches content, not visibility
     
     return matchesSearch && matchesRegion && matchesSector && matchesType && matchesCore;
   });

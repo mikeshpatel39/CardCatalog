@@ -10,7 +10,7 @@ interface TimelineViewProps {
   onSelectCard: (cardId: string, selected: boolean) => void;
   onEditCard?: (card: Card) => void;
   onDeleteCard?: (cardId: string) => void;
-  isPlainEnglish?: boolean;
+  isEasyLanguage?: boolean;
 }
 
 const START_YEAR = 1840;
@@ -59,7 +59,7 @@ function getPositionPercentage(year: number): number {
   return ((clampedYear - START_YEAR) / YEAR_RANGE) * 100;
 }
 
-export function TimelineView({ cards, selectedCards, onSelectCard, onEditCard, onDeleteCard, isPlainEnglish }: TimelineViewProps) {
+export function TimelineView({ cards, selectedCards, onSelectCard, onEditCard, onDeleteCard, isEasyLanguage }: TimelineViewProps) {
   const decades = getDecades();
   
   const cardsByYear = cards.reduce((acc, card) => {
@@ -152,7 +152,7 @@ export function TimelineView({ cards, selectedCards, onSelectCard, onEditCard, o
                         <div className="space-y-2">
                           <div className="font-semibold">{card.name}</div>
                           <div className="text-xs text-muted-foreground">
-                            {(isPlainEnglish && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
+                            {(isEasyLanguage && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
                           </div>
                           <div className="text-xs">
                             {card.author} • {card.region} • {card.sector}
