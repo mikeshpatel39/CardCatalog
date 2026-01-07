@@ -173,7 +173,7 @@ export function CardsTable({
                 <TableCell className="text-sm font-medium text-foreground" data-testid={`text-name-${card.id}`}>
                   {card.name}
                 </TableCell>
-                <TableCell className="text-sm text-muted-foreground max-w-xs" data-testid={`text-content-${card.id}`}>
+                <TableCell className="text-sm text-muted-foreground w-[400px] min-w-[300px]" data-testid={`text-content-${card.id}`}>
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div className="line-clamp-2 cursor-help overflow-hidden">
