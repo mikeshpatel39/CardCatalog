@@ -176,7 +176,7 @@ export function CardsTable({
                 <TableCell className="text-sm text-muted-foreground max-w-xs" data-testid={`text-content-${card.id}`}>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="truncate cursor-help">
+                      <div className="line-clamp-2 cursor-help overflow-hidden">
                         {(isEasyLanguage && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
                       </div>
                     </TooltipTrigger>
