@@ -139,6 +139,7 @@ export default function Cards() {
       card.text.toLowerCase().includes(searchQuery.toLowerCase()) ||
       card.author.toLowerCase().includes(searchQuery.toLowerCase());
     
+    const matchesRegion = !regionFilter || card.region === regionFilter;
     const matchesSector = !sectorFilter || card.sector === sectorFilter;
     const matchesCore = coreFilter === null || card.isCore === coreFilter;
     const matchesType = !typeFilter || card.type === typeFilter;
