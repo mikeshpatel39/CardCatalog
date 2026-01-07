@@ -1,11 +1,16 @@
 import { useState } from "react";
-import { Card } from "@shared/schema";
+import { Card, InsertCard } from "@shared/schema";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
-import { ArrowUpDown, Edit, Trash2, Check } from "lucide-react";
+import { ArrowUpDown, Edit, Trash2, Check, Plus } from "lucide-react";
 import { format } from "date-fns";
+import { useMutation } from "@tanstack/react-query";
+import { apiRequest, queryClient } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 interface CardsTableProps {
   cards: Card[];
@@ -29,6 +34,31 @@ export function CardsTable({
   isPlainEnglish
 }: CardsTableProps) {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
+  const [addVersionCard, setAddVersionCard] = useState<Card | null>(null);
+  const [newVersionText, setNewVersionText] = useState("");
+  const { toast } = useToast();
+
+  const addVersionMutation = useMutation({
+    mutationFn: async ({ id, versions }: { id: string; versions: string[] }) => {
+      const res = await apiRequest("PUT", `/api/cards/${id}`, { versions });
+      return res.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/cards"] });
+      toast({ title: "Version added successfully" });
+      setAddVersionCard(null);
+      setNewVersionText("");
+    },
+    onError: () => {
+      toast({ title: "Failed to add version", variant: "destructive" });
+    }
+  });
+
+  const handleAddVersion = () => {
+    if (!addVersionCard || !newVersionText.trim()) return;
+    const updatedVersions = [...addVersionCard.versions, newVersionText.trim()];
+    addVersionMutation.mutate({ id: addVersionCard.id, versions: updatedVersions });
+  };
 
   const sortedCards = [...cards].sort((a, b) => {
     const dateA = new Date(a.createdAt).getTime();
@@ -168,23 +198,38 @@ export function CardsTable({
                   )}
                 </TableCell>
                 <TableCell>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <span 
-                        className="text-sm text-primary cursor-pointer underline" 
-                        data-testid={`text-versions-${card.id}`}
-                      >
-                        {card.versions.length} version{card.versions.length !== 1 ? 's' : ''}
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="text-xs">
-                        {card.versions.map((version, index) => (
-                          <div key={index}>Version {index + 1}: {version}</div>
-                        ))}
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
+                  <div className="flex flex-col items-start gap-1">
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <span 
+                          className="text-sm text-primary cursor-pointer underline" 
+                          data-testid={`text-versions-${card.id}`}
+                        >
+                          {card.versions.length} version{card.versions.length !== 1 ? 's' : ''}
+                        </span>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div className="text-xs">
+                          {card.versions.map((version, index) => (
+                            <div key={index}>Version {index + 1}: {version}</div>
+                          ))}
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setAddVersionCard(card);
+                        setNewVersionText("");
+                      }}
+                      className="h-7 px-2 text-[10px] text-muted-foreground hover:text-primary"
+                      data-testid={`button-add-version-${card.id}`}
+                    >
+                      <Plus className="h-3 w-3 mr-1" />
+                      Add Version
+                    </Button>
+                  </div>
                 </TableCell>
                 <TableCell>
                   <div className="flex space-x-2">
@@ -213,6 +258,33 @@ export function CardsTable({
           </TableBody>
         </Table>
       </div>
+
+      <Dialog open={!!addVersionCard} onOpenChange={(open) => !open && setAddVersionCard(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add New Version</DialogTitle>
+          </DialogHeader>
+          <div className="py-4">
+            <Textarea
+              placeholder="Enter the new version text..."
+              value={newVersionText}
+              onChange={(e) => setNewVersionText(e.target.value)}
+              className="min-h-[100px]"
+              data-testid="textarea-new-version"
+            />
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setAddVersionCard(null)}>Cancel</Button>
+            <Button 
+              onClick={handleAddVersion} 
+              disabled={addVersionMutation.isPending || !newVersionText.trim()}
+              data-testid="button-confirm-add-version"
+            >
+              {addVersionMutation.isPending ? "Adding..." : "Add Version"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
