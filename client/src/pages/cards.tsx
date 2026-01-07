@@ -60,10 +60,19 @@ const SECTORS = [
   "Other"
 ];
 
+const LANGUAGES = [
+  "English",
+  "Spanish",
+  "Arabic",
+  "Burmese",
+  "Urdu"
+];
+
 export default function Cards() {
   const [searchQuery, setSearchQuery] = useState("");
   const [regionFilter, setRegionFilter] = useState("");
   const [sectorFilter, setSectorFilter] = useState("");
+  const [languageFilter, setLanguageFilter] = useState("English");
   const [typeFilter, setTypeFilter] = useState("");
   const [coreFilter, setCoreFilter] = useState<boolean | null>(null);
   const [easyLanguageFilter, setEasyLanguageFilter] = useState<boolean>(false);
@@ -151,6 +160,7 @@ export default function Cards() {
     setSearchQuery("");
     setRegionFilter("");
     setSectorFilter("");
+    setLanguageFilter("English");
     setTypeFilter("");
     setCoreFilter(null);
     setEasyLanguageFilter(false);
@@ -253,6 +263,22 @@ export default function Cards() {
                   <SelectItem value="all">All Sectors</SelectItem>
                   {SECTORS.map(sector => (
                     <SelectItem key={sector} value={sector}>{sector}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="min-w-48">
+              <Label className="block text-sm font-medium text-foreground mb-2">
+                Language
+              </Label>
+              <Select value={languageFilter} onValueChange={setLanguageFilter}>
+                <SelectTrigger data-testid="select-language">
+                  <SelectValue placeholder="Select Language" />
+                </SelectTrigger>
+                <SelectContent>
+                  {LANGUAGES.map(lang => (
+                    <SelectItem key={lang} value={lang}>{lang}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
