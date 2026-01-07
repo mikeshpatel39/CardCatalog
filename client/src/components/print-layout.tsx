@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { X, Printer } from "lucide-react";
@@ -11,7 +11,18 @@ interface PrintLayoutProps {
 }
 
 export function PrintLayout({ cards, onClose, isEasyLanguage }: PrintLayoutProps) {
+  const [editableCards, setEditableCards] = useState<Record<string, { name: string; text: string }>>({});
+
   useEffect(() => {
+    const initialEditable = cards.reduce((acc, card) => {
+      acc[card.id] = {
+        name: card.name,
+        text: (isEasyLanguage && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text
+      };
+      return acc;
+    }, {} as Record<string, { name: string; text: string }>);
+    setEditableCards(initialEditable);
+
     // Add print styles to document head
     const printStyles = document.createElement("style");
     printStyles.innerHTML = `
@@ -41,6 +52,10 @@ export function PrintLayout({ cards, onClose, isEasyLanguage }: PrintLayoutProps
           background: white;
           box-sizing: border-box;
         }
+        [contenteditable="true"] {
+          border: none !important;
+          outline: none !important;
+        }
         @page {
           size: A4;
           margin: 0;
@@ -55,10 +70,17 @@ export function PrintLayout({ cards, onClose, isEasyLanguage }: PrintLayoutProps
     return () => {
       document.head.removeChild(printStyles);
     };
-  }, []);
+  }, [cards, isEasyLanguage]);
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleUpdate = (id: string, field: 'name' | 'text', value: string) => {
+    setEditableCards(prev => ({
+      ...prev,
+      [id]: { ...prev[id], [field]: value }
+    }));
   };
 
   // Split cards into groups of 4 for each page
@@ -75,7 +97,7 @@ export function PrintLayout({ cards, onClose, isEasyLanguage }: PrintLayoutProps
           <div>
             <h2 className="text-lg font-semibold">Print Preview</h2>
             <p className="text-sm text-muted-foreground">
-              {cards.length} cards selected • {cardPages.length} page{cardPages.length !== 1 ? 's' : ''}
+              {cards.length} cards selected • {cardPages.length} page{cardPages.length !== 1 ? 's' : ''} • <span className="text-primary italic">Click text below to edit before printing</span>
             </p>
           </div>
           <div className="flex space-x-3">
@@ -95,37 +117,55 @@ export function PrintLayout({ cards, onClose, isEasyLanguage }: PrintLayoutProps
       <div className="print-area">
         {cardPages.map((pageCards, pageIndex) => (
           <div key={pageIndex} className="card-print-layout">
-            {pageCards.map((card) => (
-              <div 
-                key={card.id} 
-                className={`print-card ${card.type === 'resistance' ? 'border-green-500 bg-green-50' : 'border-blue-500 bg-blue-50'}`} 
-                data-testid={`print-card-${card.id}`}
-              >
-                <div className="flex items-center mb-3">
-                  {card.imageUrl && (
-                    <img 
-                      src={card.imageUrl} 
-                      alt={card.name}
-                      className="h-10 w-15 object-cover rounded mr-3"
-                    />
-                  )}
-                  <div className="flex-1">
-                    <h3 className="font-medium text-sm">{card.name}</h3>
-                    <p className="text-xs text-gray-600">{card.author} - {card.sector}</p>
+            {pageCards.map((card) => {
+              const current = editableCards[card.id] || { 
+                name: card.name, 
+                text: (isEasyLanguage && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text 
+              };
+              return (
+                <div 
+                  key={card.id} 
+                  className={`print-card ${card.type === 'resistance' ? 'border-green-500 bg-green-50' : 'border-blue-500 bg-blue-50'}`} 
+                  data-testid={`print-card-${card.id}`}
+                >
+                  <div className="flex items-center mb-3">
+                    {card.imageUrl && (
+                      <img 
+                        src={card.imageUrl} 
+                        alt={card.name}
+                        className="h-10 w-15 object-cover rounded mr-3"
+                      />
+                    )}
+                    <div className="flex-1">
+                      <h3 
+                        className="font-medium text-sm border-b border-transparent hover:border-border outline-none focus:border-primary px-1"
+                        contentEditable
+                        suppressContentEditableWarning
+                        onBlur={(e) => handleUpdate(card.id, 'name', e.currentTarget.textContent || "")}
+                      >
+                        {current.name}
+                      </h3>
+                      <p className="text-xs text-gray-600 px-1">{card.author} - {card.sector}</p>
+                    </div>
+                  </div>
+                  <div 
+                    className="text-xs leading-relaxed mb-2 border border-transparent hover:border-border rounded p-1 outline-none focus:border-primary min-h-[3em]"
+                    contentEditable
+                    suppressContentEditableWarning
+                    onBlur={(e) => handleUpdate(card.id, 'text', e.currentTarget.textContent || "")}
+                  >
+                    {current.text}
+                  </div>
+                  <div className="mt-2 text-xs text-gray-500 px-1">
+                    {card.region} | {card.cardDate || format(new Date(card.createdAt), 'yyyy-MM-dd')}
+                  </div>
+                  <div className="mt-1 text-xs text-gray-500 flex space-x-2 px-1">
+                    {card.isCore && <span>Core</span>}
+                    {card.isPlainEnglish && <span>Easy Language</span>}
                   </div>
                 </div>
-                <p className="text-xs leading-relaxed mb-2">
-                  {(isEasyLanguage && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
-                </p>
-                <div className="mt-2 text-xs text-gray-500">
-                  {card.region} | {card.cardDate || format(new Date(card.createdAt), 'yyyy-MM-dd')}
-                </div>
-                <div className="mt-1 text-xs text-gray-500 flex space-x-2">
-                  {card.isCore && <span>Core</span>}
-                  {card.isPlainEnglish && <span>Easy Language</span>}
-                </div>
-              </div>
-            ))}
+              );
+            })}
             
             {/* Fill empty slots if less than 4 cards on this page */}
             {Array.from({ length: 4 - pageCards.length }).map((_, index) => (
@@ -137,38 +177,43 @@ export function PrintLayout({ cards, onClose, isEasyLanguage }: PrintLayoutProps
         ))}
       </div>
 
-      {/* Preview for screen (non-print) */}
+      {/* Screen Preview - Uses the same editable state */}
       <div className="no-print max-w-4xl mx-auto p-8">
         <div className="space-y-8">
           {cardPages.map((pageCards, pageIndex) => (
             <div key={pageIndex} className="bg-white border border-border rounded-lg p-6 shadow-sm">
               <div className="text-sm text-muted-foreground mb-4">Page {pageIndex + 1}</div>
               <div className="grid grid-cols-2 gap-4">
-                {pageCards.map((card) => (
-                  <div key={card.id} className="border border-border rounded-lg p-4 bg-card">
-                    <div className="flex items-center mb-3">
-                      {card.imageUrl && (
-                        <img 
-                          src={card.imageUrl} 
-                          alt={card.name}
-                          className="h-8 w-12 object-cover rounded mr-2"
-                        />
-                      )}
-                      <div className="flex-1">
-                        <h4 className="font-medium text-xs">{card.name}</h4>
-                        <p className="text-xs text-muted-foreground">{card.author} - {card.sector}</p>
+                {pageCards.map((card) => {
+                  const current = editableCards[card.id] || { 
+                    name: card.name, 
+                    text: (isEasyLanguage && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text 
+                  };
+                  return (
+                    <div key={card.id} className="border border-border rounded-lg p-4 bg-card">
+                      <div className="flex items-center mb-3">
+                        {card.imageUrl && (
+                          <img 
+                            src={card.imageUrl} 
+                            alt={card.name}
+                            className="h-8 w-12 object-cover rounded mr-2"
+                          />
+                        )}
+                        <div className="flex-1">
+                          <h4 className="font-medium text-xs">{current.name}</h4>
+                          <p className="text-xs text-muted-foreground">{card.author} - {card.sector}</p>
+                        </div>
+                      </div>
+                      <p className="text-xs leading-relaxed mb-2 text-muted-foreground">
+                        {current.text}
+                      </p>
+                      <div className="text-xs text-muted-foreground">
+                        {card.region} | {card.cardDate || format(new Date(card.createdAt), 'yyyy-MM-dd')}
                       </div>
                     </div>
-                    <p className="text-xs leading-relaxed mb-2 text-muted-foreground">
-                      {(isEasyLanguage && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
-                    </p>
-                    <div className="text-xs text-muted-foreground">
-                      {card.region} | {card.cardDate || format(new Date(card.createdAt), 'yyyy-MM-dd')}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
                 
-                {/* Show empty slots in preview */}
                 {Array.from({ length: 4 - pageCards.length }).map((_, index) => (
                   <div key={`preview-empty-${index}`} className="border border-dashed border-border rounded-lg p-4 bg-muted/20">
                     <div className="h-20 flex items-center justify-center text-xs text-muted-foreground">
