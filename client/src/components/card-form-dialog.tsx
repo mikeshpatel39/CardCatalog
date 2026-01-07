@@ -386,11 +386,11 @@ export function CardFormDialog({ open, onOpenChange, editingCard }: CardFormDial
                       <Checkbox
                         checked={field.value}
                         onCheckedChange={field.onChange}
-                        data-testid="checkbox-is-plain-english"
+                        data-testid="checkbox-is-easy-language"
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel>Plain English</FormLabel>
+                      <FormLabel>Easy Language</FormLabel>
                     </div>
                   </FormItem>
                 )}

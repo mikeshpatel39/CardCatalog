@@ -7,10 +7,10 @@ import { format } from "date-fns";
 interface PrintLayoutProps {
   cards: Card[];
   onClose: () => void;
-  isPlainEnglish?: boolean;
+  isEasyLanguage?: boolean;
 }
 
-export function PrintLayout({ cards, onClose, isPlainEnglish }: PrintLayoutProps) {
+export function PrintLayout({ cards, onClose, isEasyLanguage }: PrintLayoutProps) {
   useEffect(() => {
     // Add print styles to document head
     const printStyles = document.createElement("style");
@@ -115,14 +115,14 @@ export function PrintLayout({ cards, onClose, isPlainEnglish }: PrintLayoutProps
                   </div>
                 </div>
                 <p className="text-xs leading-relaxed mb-2">
-                  {(isPlainEnglish && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
+                  {(isEasyLanguage && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
                 </p>
                 <div className="mt-2 text-xs text-gray-500">
                   {card.region} | {card.cardDate || format(new Date(card.createdAt), 'yyyy-MM-dd')}
                 </div>
                 <div className="mt-1 text-xs text-gray-500 flex space-x-2">
                   {card.isCore && <span>Core</span>}
-                  {card.isPlainEnglish && <span>Plain English</span>}
+                  {card.isPlainEnglish && <span>Easy Language</span>}
                 </div>
               </div>
             ))}
@@ -160,7 +160,7 @@ export function PrintLayout({ cards, onClose, isPlainEnglish }: PrintLayoutProps
                       </div>
                     </div>
                     <p className="text-xs leading-relaxed mb-2 text-muted-foreground">
-                      {(isPlainEnglish && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
+                      {(isEasyLanguage && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
                     </p>
                     <div className="text-xs text-muted-foreground">
                       {card.region} | {card.cardDate || format(new Date(card.createdAt), 'yyyy-MM-dd')}

@@ -23,7 +23,7 @@ interface CardsTableProps {
   onEditCard: (card: Card) => void;
   onDeleteCard: (cardId: string) => void;
   isLoading: boolean;
-  isPlainEnglish?: boolean;
+  isEasyLanguage?: boolean;
 }
 
 export function CardsTable({
@@ -34,12 +34,12 @@ export function CardsTable({
   onEditCard,
   onDeleteCard,
   isLoading,
-  isPlainEnglish
+  isEasyLanguage
 }: CardsTableProps) {
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('desc');
   const [addVersionCard, setAddVersionCard] = useState<Card | null>(null);
   const [newVersionText, setNewVersionText] = useState("");
-  const [isNewVersionPlainEnglish, setIsNewVersionPlainEnglish] = useState(false);
+  const [isNewVersionEasyLanguage, setIsNewVersionEasyLanguage] = useState(false);
   const { toast } = useToast();
 
   const addVersionMutation = useMutation({
@@ -52,7 +52,7 @@ export function CardsTable({
       toast({ title: "Version added successfully" });
       setAddVersionCard(null);
       setNewVersionText("");
-      setIsNewVersionPlainEnglish(false);
+      setIsNewVersionEasyLanguage(false);
     },
     onError: () => {
       toast({ title: "Failed to add version", variant: "destructive" });
@@ -65,7 +65,7 @@ export function CardsTable({
     addVersionMutation.mutate({ 
       id: addVersionCard.id, 
       versions: updatedVersions,
-      isPlainEnglish: isNewVersionPlainEnglish
+      isPlainEnglish: isNewVersionEasyLanguage
     });
   };
 
@@ -132,7 +132,7 @@ export function CardsTable({
               <TableHead className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Sector</TableHead>
               <TableHead className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Author</TableHead>
               <TableHead className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Core</TableHead>
-              <TableHead className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Plain English</TableHead>
+              <TableHead className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Easy Language</TableHead>
               <TableHead className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Versions</TableHead>
               <TableHead className="text-xs font-medium text-muted-foreground uppercase tracking-wider">Actions</TableHead>
             </TableRow>
@@ -177,12 +177,12 @@ export function CardsTable({
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div className="truncate cursor-help">
-                        {(isPlainEnglish && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
+                        {(isEasyLanguage && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
                       </div>
                     </TooltipTrigger>
                     <TooltipContent className="max-w-md">
                       <p className="text-sm leading-relaxed">
-                        {(isPlainEnglish && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
+                        {(isEasyLanguage && card.isPlainEnglish) ? (card.versions[1] || card.text) : card.text}
                       </p>
                     </TooltipContent>
                   </Tooltip>
@@ -203,7 +203,7 @@ export function CardsTable({
                 </TableCell>
                 <TableCell>
                   {card.isPlainEnglish && (
-                    <Check className="h-4 w-4 text-green-600" data-testid={`icon-plain-english-${card.id}`} />
+                    <Check className="h-4 w-4 text-green-600" data-testid={`icon-easy-language-${card.id}`} />
                   )}
                 </TableCell>
                 <TableCell>
@@ -231,7 +231,7 @@ export function CardsTable({
                       onClick={() => {
                         setAddVersionCard(card);
                         setNewVersionText("");
-                        setIsNewVersionPlainEnglish(card.isPlainEnglish); // Pre-fill with current status
+                        setIsNewVersionEasyLanguage(card.isPlainEnglish); // Pre-fill with current status
                       }}
                       className="h-7 px-2 text-[10px] text-muted-foreground hover:text-primary"
                       data-testid={`button-add-version-${card.id}`}
@@ -284,12 +284,12 @@ export function CardsTable({
             />
             <div className="flex items-center space-x-2">
               <Switch
-                id="plain-english-version"
-                checked={isNewVersionPlainEnglish}
-                onCheckedChange={setIsNewVersionPlainEnglish}
-                data-testid="switch-version-plain-english"
+                id="easy-language-version"
+                checked={isNewVersionEasyLanguage}
+                onCheckedChange={setIsNewVersionEasyLanguage}
+                data-testid="switch-version-easy-language"
               />
-              <Label htmlFor="plain-english-version">This is a Plain English version</Label>
+              <Label htmlFor="easy-language-version">This is an Easy Language version</Label>
             </div>
           </div>
           <DialogFooter>

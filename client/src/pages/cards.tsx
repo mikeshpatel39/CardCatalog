@@ -66,7 +66,7 @@ export default function Cards() {
   const [sectorFilter, setSectorFilter] = useState("");
   const [typeFilter, setTypeFilter] = useState("");
   const [coreFilter, setCoreFilter] = useState<boolean | null>(null);
-  const [plainEnglishFilter, setPlainEnglishFilter] = useState<boolean | null>(null);
+  const [easyLanguageFilter, setEasyLanguageFilter] = useState<boolean>(false);
   const [selectedCards, setSelectedCards] = useState<Set<string>>(new Set());
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingCard, setEditingCard] = useState<Card | undefined>();
@@ -144,7 +144,7 @@ export default function Cards() {
     const matchesCore = coreFilter === null || card.isCore === coreFilter;
     const matchesType = !typeFilter || card.type === typeFilter;
     
-    // We don't filter by plainEnglishFilter here anymore because the toggle 
+    // We don't filter by easyLanguageFilter here anymore because the toggle 
     // now switches content, not visibility
     
     return matchesSearch && matchesRegion && matchesSector && matchesType && matchesCore;
@@ -156,7 +156,7 @@ export default function Cards() {
     setSectorFilter("");
     setTypeFilter("");
     setCoreFilter(null);
-    setPlainEnglishFilter(false); // Default to false instead of null
+    setEasyLanguageFilter(false);
   };
 
   const selectedCardsData = cards.filter(card => selectedCards.has(card.id));
@@ -166,7 +166,7 @@ export default function Cards() {
       <PrintLayout 
         cards={selectedCardsData} 
         onClose={() => setShowPrintLayout(false)} 
-        isPlainEnglish={!!plainEnglishFilter}
+        isEasyLanguage={easyLanguageFilter}
       />
     );
   }
@@ -289,12 +289,12 @@ export default function Cards() {
             </div>
 
             <div className="flex flex-col space-y-2 mb-1">
-              <Label className="text-sm font-medium text-foreground">Plain English</Label>
+              <Label className="text-sm font-medium text-foreground">Easy Language</Label>
               <div className="flex items-center h-10">
                 <Switch 
-                  checked={!!plainEnglishFilter} 
-                  onCheckedChange={(checked) => setPlainEnglishFilter(checked)}
-                  data-testid="switch-plain-english-content"
+                  checked={easyLanguageFilter} 
+                  onCheckedChange={(checked) => setEasyLanguageFilter(checked)}
+                  data-testid="switch-easy-language-content"
                 />
               </div>
             </div>
@@ -347,7 +347,7 @@ export default function Cards() {
             onEditCard={handleEditCard}
             onDeleteCard={handleDeleteCard}
             isLoading={isLoading}
-            isPlainEnglish={!!plainEnglishFilter}
+            isEasyLanguage={easyLanguageFilter}
           />
         ) : viewType === "grid" ? (
           <CardGridView
@@ -356,7 +356,7 @@ export default function Cards() {
             onSelectCard={handleSelectCard}
             onEditCard={handleEditCard}
             onDeleteCard={handleDeleteCard}
-            isPlainEnglish={!!plainEnglishFilter}
+            isEasyLanguage={easyLanguageFilter}
           />
         ) : (
           <TimelineView
@@ -365,7 +365,7 @@ export default function Cards() {
             onSelectCard={handleSelectCard}
             onEditCard={handleEditCard}
             onDeleteCard={handleDeleteCard}
-            isPlainEnglish={!!plainEnglishFilter}
+            isEasyLanguage={easyLanguageFilter}
           />
         )}
       </main>
