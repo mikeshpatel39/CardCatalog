@@ -74,6 +74,48 @@ export default function Cards() {
   const [viewType, setViewType] = useState<ViewType>("table");
   const { toast } = useToast();
 
+  const handleSelectCard = (cardId: string, selected: boolean) => {
+    const newSelected = new Set(selectedCards);
+    if (selected) {
+      newSelected.add(cardId);
+    } else {
+      newSelected.delete(cardId);
+    }
+    setSelectedCards(newSelected);
+  };
+
+  const handleSelectAll = (selected: boolean) => {
+    if (selected) {
+      setSelectedCards(new Set(filteredCards.map(card => card.id)));
+    } else {
+      setSelectedCards(new Set());
+    }
+  };
+
+  const handleDeleteCard = (cardId: string) => {
+    if (confirm("Are you sure you want to delete this card?")) {
+      deleteCardMutation.mutate(cardId);
+    }
+  };
+
+  const handleEditCard = (card: Card) => {
+    setEditingCard(card);
+    setIsFormOpen(true);
+  };
+
+  const handleAddCard = () => {
+    setEditingCard(undefined);
+    setIsFormOpen(true);
+  };
+
+  const handlePrintSelected = () => {
+    if (selectedCards.size === 0) {
+      toast({ title: "Please select cards to print", variant: "destructive" });
+      return;
+    }
+    setShowPrintLayout(true);
+  };
+
   const { data: cards = [], isLoading } = useQuery<Card[]>({
     queryKey: ["/api/cards"],
   });
@@ -97,9 +139,9 @@ export default function Cards() {
       card.text.toLowerCase().includes(searchQuery.toLowerCase()) ||
       card.author.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesRegion = !regionFilter || card.region === regionFilter;
     const matchesSector = !sectorFilter || card.sector === sectorFilter;
     const matchesCore = coreFilter === null || card.isCore === coreFilter;
+    const matchesType = !typeFilter || card.type === typeFilter;
     
     // We don't filter by plainEnglishFilter here anymore because the toggle 
     // now switches content, not visibility
